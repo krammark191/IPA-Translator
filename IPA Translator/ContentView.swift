@@ -72,7 +72,9 @@ struct ContentView: View {
                .foregroundColor(inputText.count > characterLimit ? .red : .gray)
             
             Button(action: {
-               // Functionality to translate will be added later
+               translateText(inputText: inputText, language: selectedLanguage) { ipa in
+                  ipaOutput = ipa ?? "Translation failed"
+               }
             }) {
                Text("Translate to IPA")
                   .frame(maxWidth: .infinity)
