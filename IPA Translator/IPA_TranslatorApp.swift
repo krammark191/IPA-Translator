@@ -1,0 +1,17 @@
+//
+//  IPA_TranslatorApp.swift
+//  IPA Translator
+//
+//  Created by Mark Van Horn on 3/13/25.
+//
+
+import SwiftUI
+
+@main
+struct IPA_TranslatorApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
