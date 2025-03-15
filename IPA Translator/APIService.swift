@@ -20,14 +20,14 @@ struct TranslationResponse: Codable {
    let spelling: String
 }
 
-func translateText(inputText: String, language: String, completion: @escaping (String?) -> Void) {
+func translateText(inputText: String, languageCode: String, completion: @escaping (String?) -> Void) {
    guard let url = URL(string: "https://api2.unalengua.com/ipav3") else {
       print("Invalid URL")
       completion(nil)
       return
    }
    
-   let requestData = TranslationRequest(text: inputText, lang: language, mode: true)
+   let requestData = TranslationRequest(text: inputText, lang: languageCode, mode: true)
    
    guard let jsonData = try? JSONEncoder().encode(requestData) else {
       print("Failed to encode request data")

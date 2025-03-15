@@ -26,6 +26,18 @@ struct ContentView: View {
       "Esperanto": "Enigu tekston por traduki",
       "Russian": "Введите текст для перевода"
    ]
+   let languageCodes: [String: String] = [
+      "English": "en-US",
+      "Spanish": "es-MX",
+      "Italian": "it-IT",
+      "Portuguese": "pt-PT",
+      "French": "fr-FR",
+      "Romanian": "ro-RO",
+      "German": "de-DE",
+      "Polish": "pl-PL",
+      "Esperanto": "eo",
+      "Russian": "ru-RU"
+   ]
    let characterLimit = 2000
    
    var body: some View {
@@ -33,14 +45,15 @@ struct ContentView: View {
          VStack(spacing: 20) {
             HStack {
                Picker("Select Language", selection: $selectedLanguage) {
-                  ForEach(languages, id: \..self) { language in
+                  ForEach(languages, id: \.self) { language in
                      Text(language)
                   }
                }
                .pickerStyle(MenuPickerStyle())
                
-               Toggle(isOn: $isDarkMode) {
-                  Text("Dark Mode")
+               HStack {
+                  Toggle("", isOn: $isDarkMode) // Empty label to keep it compact
+                  Text(" Dark Mode")
                }
                .padding(.leading)
             }
@@ -72,7 +85,12 @@ struct ContentView: View {
                .foregroundColor(inputText.count > characterLimit ? .red : .gray)
             
             Button(action: {
-               translateText(inputText: inputText, language: selectedLanguage) { ipa in
+               guard let langCode = languageCodes[selectedLanguage] else {
+                  print("Invalid language selection")
+                  return
+               }
+               
+               translateText(inputText: inputText, languageCode: langCode) { ipa in
                   ipaOutput = ipa ?? "Translation failed"
                }
             }) {
@@ -85,15 +103,29 @@ struct ContentView: View {
             }
             .padding(.horizontal)
             
-            Text("IPA Output:")
-               .font(.headline)
-            
-            Text(ipaOutput.isEmpty ? "Your translated text will appear here." : ipaOutput)
-               .padding()
-               .frame(maxWidth: .infinity, minHeight: 100)
-               .background(Color.gray.opacity(0.2))
-               .cornerRadius(10)
-               .padding(.horizontal)
+            VStack(alignment: .leading, spacing: 8) {
+               HStack {
+                  Text("IPA Output:")
+                     .font(.headline)
+                  Spacer()
+                  if !ipaOutput.isEmpty {
+                     Button(action: {
+                        UIPasteboard.general.string = ipaOutput
+                     }) {
+                        Image(systemName: "doc.on.doc")
+                           .foregroundColor(.blue)
+                     }
+                  }
+               }
+               .padding(.horizontal, 20) // Adds spacing from screen edges
+               
+               Text(ipaOutput.isEmpty ? "Your translated text will appear here." : ipaOutput)
+                  .padding()
+                  .frame(maxWidth: .infinity, minHeight: 100)
+                  .background(Color.gray.opacity(0.2))
+                  .cornerRadius(10)
+                  .padding(.horizontal, 20) // Ensures uniform padding
+            }
             
             Spacer()
          }
@@ -104,5 +136,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+   ContentView()
 }
