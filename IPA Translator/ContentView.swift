@@ -125,6 +125,11 @@ struct ContentView: View {
                   .foregroundColor(inputText.count > characterLimit ? .red : .gray)
                
                Button(action: {
+                  if inputText.isEmpty {
+                     ipaOutput = ""
+                     return
+                  }
+                  
                   guard let langCode = languageCodes[selectedLanguage] else {
                      print("Invalid language selection")
                      return
