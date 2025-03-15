@@ -13,11 +13,37 @@ struct TranslationRequest: Codable {
    let mode: Bool
 }
 
+enum SpellingVariant: Codable {
+   case bool(Bool)
+   case string(String)
+   
+   init(from decoder: Decoder) throws {
+      let container = try decoder.singleValueContainer()
+      if let boolValue = try? container.decode(Bool.self) {
+         self = .bool(boolValue)
+      } else if let stringValue = try? container.decode(String.self) {
+         self = .string(stringValue)
+      } else {
+         throw DecodingError.typeMismatch(SpellingVariant.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Expected Bool or String"))
+      }
+   }
+   
+   func encode(to encoder: Encoder) throws {
+      var container = encoder.singleValueContainer()
+      switch self {
+         case .bool(let value):
+            try container.encode(value)
+         case .string(let value):
+            try container.encode(value)
+      }
+   }
+}
+
 struct TranslationResponse: Codable {
    let detected: String
    let ipa: String
    let lang: String
-   let spelling: Bool
+   let spelling: SpellingVariant
 }
 
 func translateText(inputText: String, languageCode: String, completion: @escaping (String?) -> Void) {
