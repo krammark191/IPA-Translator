@@ -30,7 +30,7 @@ struct ContentView: View {
       "English": "en-US",
       "Spanish": "es-MX",
       "Italian": "it-IT",
-      "Portuguese": "pt-PT",
+      "Portuguese": "pt-BR",
       "French": "fr-FR",
       "Romanian": "ro-RO",
       "German": "de-DE",
