@@ -6,7 +6,32 @@
 //
 
 import SwiftUI
+import Combine
 import UIKit
+
+struct KeyboardResponsiveModifier: ViewModifier {
+   @State private var currentHeight: CGFloat = 0
+   
+   func body(content: Content) -> some View {
+      content
+         .padding(.bottom, currentHeight)
+         .onReceive(Publishers.Merge(
+            NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
+               .compactMap { $0.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect }
+               .map { $0.height },
+            NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
+               .map { _ in CGFloat(0) }
+         )) { height in
+            self.currentHeight = height
+         }
+   }
+}
+
+extension View {
+   func keyboardResponsive() -> some View {
+      self.modifier(KeyboardResponsiveModifier())
+   }
+}
 
 struct ContentView: View {
    @State private var inputText: String = ""
@@ -139,6 +164,7 @@ struct ContentView: View {
          }
          .navigationTitle("IPA Translator")
          .preferredColorScheme(isDarkMode ? .dark : .light)
+         .keyboardResponsive()
       }
    }
 }
