@@ -81,99 +81,100 @@ struct ContentView: View {
    
    var body: some View {
       NavigationView {
-         VStack(spacing: 20) {
-            HStack {
-               Picker("Select Language", selection: $selectedLanguage) {
-                  ForEach(languages, id: \.self) { language in
-                     Text(language)
-                  }
-               }
-               .pickerStyle(MenuPickerStyle())
-               
+         ScrollView {
+            VStack(spacing: 20) {
                HStack {
-                  Toggle("", isOn: $isDarkMode)
-                  Text(" Dark Mode")
-               }
-               .padding(.leading)
-            }
-            .padding()
-            
-            HStack {
-               TextField(languagePlaceholders[selectedLanguage] ?? "Enter text to translate", text: $inputText, onEditingChanged: { _ in
-                  if inputText.count > characterLimit {
-                     inputText = String(inputText.prefix(characterLimit))
-                  }
-               })
-               .textFieldStyle(RoundedBorderTextFieldStyle())
-               .padding()
-               .frame(height: 100)
-               
-               if !inputText.isEmpty {
-                  Button(action: {
-                     inputText = ""
-                  }) {
-                     Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(.gray)
-                  }
-                  .padding(.trailing)
-               }
-            }
-            
-            Text("\(inputText.count)/\(characterLimit)")
-               .font(.caption)
-               .foregroundColor(inputText.count > characterLimit ? .red : .gray)
-            
-            Button(action: {
-               guard let langCode = languageCodes[selectedLanguage] else {
-                  print("Invalid language selection")
-                  return
-               }
-               
-               hideKeyboard()
-               
-               translateText(inputText: inputText, languageCode: langCode) { ipa in
-                  ipaOutput = ipa ?? "Translation failed"
-               }
-            }) {
-               Text("Translate to IPA")
-                  .frame(maxWidth: .infinity)
-                  .padding()
-                  .background(Color.blue)
-                  .foregroundColor(.white)
-                  .cornerRadius(10)
-            }
-            .padding(.horizontal)
-            
-            VStack(alignment: .leading, spacing: 8) {
-               HStack {
-                  Text("IPA Output:")
-                     .font(.headline)
-                  Spacer()
-                  if !ipaOutput.isEmpty {
-                     Button(action: {
-                        UIPasteboard.general.string = ipaOutput
-                     }) {
-                        Image(systemName: "doc.on.doc")
-                           .foregroundColor(.blue)
+                  Picker("Select Language", selection: $selectedLanguage) {
+                     ForEach(languages, id: \.self) { language in
+                        Text(language)
                      }
                   }
+                  .pickerStyle(MenuPickerStyle())
+                  
+                  HStack {
+                     Toggle("", isOn: $isDarkMode)
+                     Text(" Dark Mode")
+                  }
+                  .padding(.leading)
                }
-               .padding(.horizontal, 20) // Adds spacing from screen edges
+               .padding()
                
-               Text(ipaOutput.isEmpty ? "Translation" : ipaOutput)
+               HStack {
+                  TextField(languagePlaceholders[selectedLanguage] ?? "Enter text to translate", text: $inputText, onEditingChanged: { _ in
+                     if inputText.count > characterLimit {
+                        inputText = String(inputText.prefix(characterLimit))
+                     }
+                  })
+                  .textFieldStyle(RoundedBorderTextFieldStyle())
                   .padding()
-                  .frame(maxWidth: .infinity, minHeight: 100)
-                  .background(Color.gray.opacity(0.2))
-                  .cornerRadius(10)
-                  .padding(.horizontal, 20) // Ensures uniform padding
+                  .frame(height: 100)
+                  
+                  if !inputText.isEmpty {
+                     Button(action: {
+                        inputText = ""
+                     }) {
+                        Image(systemName: "xmark.circle.fill")
+                           .foregroundColor(.gray)
+                     }
+                     .padding(.trailing)
+                  }
+               }
+               
+               Text("\(inputText.count)/\(characterLimit)")
+                  .font(.caption)
+                  .foregroundColor(inputText.count > characterLimit ? .red : .gray)
+               
+               Button(action: {
+                  guard let langCode = languageCodes[selectedLanguage] else {
+                     print("Invalid language selection")
+                     return
+                  }
+                  
+                  hideKeyboard()
+                  
+                  translateText(inputText: inputText, languageCode: langCode) { ipa in
+                     ipaOutput = ipa ?? "Translation failed"
+                  }
+               }) {
+                  Text("Translate to IPA")
+                     .frame(maxWidth: .infinity)
+                     .padding()
+                     .background(Color.blue)
+                     .foregroundColor(.white)
+                     .cornerRadius(10)
+               }
+               .padding(.horizontal)
+               
+               VStack(alignment: .leading, spacing: 8) {
+                  HStack {
+                     Text("IPA Output:")
+                        .font(.headline)
+                     Spacer()
+                     if !ipaOutput.isEmpty {
+                        Button(action: {
+                           UIPasteboard.general.string = ipaOutput
+                        }) {
+                           Image(systemName: "doc.on.doc")
+                              .foregroundColor(.blue)
+                        }
+                     }
+                  }
+                  .padding(.horizontal, 20) // Adds spacing from screen edges
+                  
+                  Text(ipaOutput.isEmpty ? "Translation" : ipaOutput)
+                     .padding()
+                     .frame(maxWidth: .infinity, minHeight: 100)
+                     .background(Color.gray.opacity(0.2))
+                     .cornerRadius(10)
+                     .padding(.horizontal, 20) // Ensures uniform padding
+               }
+               
+               Spacer()
             }
-            
-            Spacer()
-            
+            .navigationTitle("IPA Translator")
+            .preferredColorScheme(isDarkMode ? .dark : .light)
+            .keyboardResponsive()
          }
-         .navigationTitle("IPA Translator")
-         .preferredColorScheme(isDarkMode ? .dark : .light)
-         .keyboardResponsive()
       }
    }
 }
