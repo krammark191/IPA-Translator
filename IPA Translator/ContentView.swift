@@ -167,6 +167,15 @@ struct ContentView: View {
                      .background(Color.gray.opacity(0.2))
                      .cornerRadius(10)
                      .padding(.horizontal, 20) // Ensures uniform padding
+                     .contextMenu {
+                        Button(action: {
+                           UIPasteboard.general.string = ipaOutput
+                        }) {
+                           Text("Copy")
+                           Image(systemName: "doc.on.doc")
+                        }
+                     }
+                     .textSelection(.enabled)
                }
                
                Spacer()
