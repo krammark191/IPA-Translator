@@ -33,6 +33,12 @@ extension View {
    }
 }
 
+extension View {
+   func hideKeyboard() {
+      UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+   }
+}
+
 struct ContentView: View {
    @State private var inputText: String = ""
    @State private var ipaOutput: String = ""
@@ -123,6 +129,8 @@ struct ContentView: View {
                   return
                }
                
+               hideKeyboard()
+               
                translateText(inputText: inputText, languageCode: langCode) { ipa in
                   ipaOutput = ipa ?? "Translation failed"
                }
@@ -161,6 +169,7 @@ struct ContentView: View {
             }
             
             Spacer()
+            
          }
          .navigationTitle("IPA Translator")
          .preferredColorScheme(isDarkMode ? .dark : .light)
