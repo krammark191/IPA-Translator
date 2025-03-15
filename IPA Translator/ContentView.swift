@@ -119,7 +119,7 @@ struct ContentView: View {
                }
                .padding(.horizontal, 20) // Adds spacing from screen edges
                
-               Text(ipaOutput.isEmpty ? "Your translated text will appear here." : ipaOutput)
+               Text(ipaOutput.isEmpty ? "Translation" : ipaOutput)
                   .padding()
                   .frame(maxWidth: .infinity, minHeight: 100)
                   .background(Color.gray.opacity(0.2))
