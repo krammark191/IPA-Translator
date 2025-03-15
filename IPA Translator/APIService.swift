@@ -17,7 +17,7 @@ struct TranslationResponse: Codable {
    let detected: String
    let ipa: String
    let lang: String
-   let spelling: String
+   let spelling: Bool
 }
 
 func translateText(inputText: String, languageCode: String, completion: @escaping (String?) -> Void) {
@@ -43,8 +43,14 @@ func translateText(inputText: String, languageCode: String, completion: @escapin
    request.httpBody = jsonData
    
    URLSession.shared.dataTask(with: request) { data, response, error in
-      guard let data = data, error == nil else {
-         print("Network error: \(error?.localizedDescription ?? "Unknown error")")
+      if let error = error {
+         print("Network error: \(error.localizedDescription)")
+         completion(nil)
+         return
+      }
+      
+      guard let data = data else {
+         print("No data received")
          completion(nil)
          return
       }
@@ -55,6 +61,12 @@ func translateText(inputText: String, languageCode: String, completion: @escapin
             completion(responseData.ipa)
          }
       } catch {
+         if let httpResponse = response as? HTTPURLResponse {
+            print("HTTP Status Code: \(httpResponse.statusCode)")
+         }
+         if let responseString = String(data: data, encoding: .utf8) {
+            print("Response data as string: \(responseString)")
+         }
          print("Failed to decode response: \(error.localizedDescription)")
          completion(nil)
       }
