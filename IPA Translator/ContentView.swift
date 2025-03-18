@@ -60,12 +60,7 @@ struct ContentView: View {
                      }
                   }
                   .pickerStyle(MenuPickerStyle())
-                  
-                  HStack {
-                     Toggle("", isOn: $isDarkMode)
-                     Text(" Dark Mode")
-                  }
-                  .padding(.leading)
+                  Spacer()
                }
                .padding()
                
@@ -154,6 +149,11 @@ struct ContentView: View {
                Spacer()
             }
             .navigationTitle("IPA Translator")
+            .toolbar {
+               ToolbarItem(placement: .navigationBarTrailing) {
+                  MenuView(isDarkMode: $isDarkMode)
+               }
+            }
             .preferredColorScheme(isDarkMode ? .dark : .light)
             .keyboardResponsive()
          }
