@@ -5,7 +5,6 @@
 //  Created by Mark Van Horn on 3/17/25.
 //
 
-
 import UIKit
 import SwiftUI
 import Combine
@@ -52,10 +51,17 @@ struct SelectableTextView: UIViewRepresentable {
       textView.font = .systemFont(ofSize: 16)
       textView.textColor = UIColor.label
       textView.backgroundColor = .clear
-      textView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
       textView.textContainer.lineBreakMode = .byWordWrapping
       textView.isScrollEnabled = true
       textView.isUserInteractionEnabled = true
+      textView.textAlignment = .center // Center horizontally
+      
+      // Calculate vertical centering
+      let textHeight = textView.sizeThatFits(CGSize(width: textView.frame.width, height: .greatestFiniteMagnitude)).height
+      let availableHeight = 100.0 // Match minHeight from ContentView
+      let topInset = max(0, (availableHeight - textHeight) / 2)
+      textView.textContainerInset = UIEdgeInsets(top: topInset, left: 8, bottom: 8, right: 8)
+      
       return textView
    }
    
@@ -63,6 +69,12 @@ struct SelectableTextView: UIViewRepresentable {
       if uiView.text != text {
          uiView.text = text
          uiView.selectedTextRange = nil // Reset selection
+         
+         // Recalculate vertical centering on update
+         let textHeight = uiView.sizeThatFits(CGSize(width: uiView.frame.width, height: .greatestFiniteMagnitude)).height
+         let availableHeight = 100.0 // Match minHeight from ContentView
+         let topInset = max(0, (availableHeight - textHeight) / 2)
+         uiView.textContainerInset = UIEdgeInsets(top: topInset, left: 8, bottom: 8, right: 8)
       }
    }
 }
