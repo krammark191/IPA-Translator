@@ -9,36 +9,6 @@ import SwiftUI
 import Combine
 import UIKit
 
-struct KeyboardResponsiveModifier: ViewModifier {
-   @State private var currentHeight: CGFloat = 0
-   
-   func body(content: Content) -> some View {
-      content
-         .padding(.bottom, currentHeight)
-         .onReceive(Publishers.Merge(
-            NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
-               .compactMap { $0.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect }
-               .map { $0.height },
-            NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
-               .map { _ in CGFloat(0) }
-         )) { height in
-            self.currentHeight = height
-         }
-   }
-}
-
-extension View {
-   func keyboardResponsive() -> some View {
-      self.modifier(KeyboardResponsiveModifier())
-   }
-}
-
-extension View {
-   func hideKeyboard() {
-      UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-   }
-}
-
 struct ContentView: View {
    @State private var inputText: String = ""
    @State private var ipaOutput: String = ""
@@ -164,23 +134,21 @@ struct ContentView: View {
                         }
                      }
                   }
-                  .padding(.horizontal, 20) // Adds spacing from screen edges
+                  .padding(.horizontal, 20)
                   
-                  Text(ipaOutput.isEmpty ? "Translation" : ipaOutput)
-                     .padding()
-                     .frame(maxWidth: .infinity, minHeight: 100)
+                  SelectableTextView(text: ipaOutput.isEmpty ? "Translation" : ipaOutput)
+                     .frame(maxWidth: .infinity, minHeight: 100, maxHeight: 200, alignment: .leading)
                      .background(Color.gray.opacity(0.2))
                      .cornerRadius(10)
-                     .padding(.horizontal, 20) // Ensures uniform padding
+                     .padding(.horizontal, 20)
                      .contextMenu {
                         Button(action: {
                            UIPasteboard.general.string = ipaOutput
                         }) {
-                           Text("Copy")
+                           Text("Copy All")
                            Image(systemName: "doc.on.doc")
                         }
                      }
-                     .textSelection(.enabled)
                }
                
                Spacer()
