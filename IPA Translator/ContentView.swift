@@ -13,14 +13,9 @@ struct ContentView: View {
    @State private var inputText: String = ""
    @State private var ipaOutput: String = ""
    @State private var selectedLanguage: String = "English"
-   @State private var isDarkMode: Bool
+   @Binding var isDarkMode: Bool  // Change to binding
    
    @Environment(\.colorScheme) var colorScheme: ColorScheme
-   
-   init() {
-      let systemDarkMode = UITraitCollection.current.userInterfaceStyle == .dark
-      _isDarkMode = State(initialValue: systemDarkMode)
-   }
    
    let languages = ["English", "Spanish", "Italian", "Portuguese", "French", "Romanian", "German", "Polish", "Esperanto", "Russian"]
    let languagePlaceholders: [String: String] = [
@@ -166,5 +161,5 @@ struct ContentView: View {
 }
 
 #Preview {
-   ContentView()
+   ContentView(isDarkMode: .constant(false))  // Pass a constant binding for preview
 }

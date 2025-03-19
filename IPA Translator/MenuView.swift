@@ -23,7 +23,7 @@ struct MenuContent: View {
    
    var body: some View {
       VStack {
-         NavigationLink(destination: ContentView()) {
+         NavigationLink(destination: ContentView(isDarkMode: $isDarkMode)) {
             Label("Home", systemImage: "house")
          }
          NavigationLink(destination: IPAChartView(isDarkMode: $isDarkMode)) {
