@@ -65,6 +65,8 @@ struct ContentView: View {
                         inputText = String(inputText.prefix(characterLimit))
                      }
                   })
+                  .autocapitalization(.none)
+                  .disableAutocorrection(true)
                   .textFieldStyle(RoundedBorderTextFieldStyle())
                   .padding()
                   .frame(height: 100)

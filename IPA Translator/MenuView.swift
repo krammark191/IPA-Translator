@@ -38,7 +38,6 @@ struct MenuContent: View {
          
          Section {
             Toggle("Dark Mode", isOn: $isDarkMode)
-               .toggleStyle(SwitchToggleStyle(tint: .blue))
          }
       }
       .padding()
