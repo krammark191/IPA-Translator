@@ -13,7 +13,7 @@ struct ContentView: View {
    @State private var inputText: String = ""
    @State private var ipaOutput: String = ""
    @State private var selectedLanguage: String = "English"
-   @Binding var isDarkMode: Bool  // Change to binding
+   @Binding var isDarkMode: Bool
    
    @Environment(\.colorScheme) var colorScheme: ColorScheme
    
@@ -149,7 +149,21 @@ struct ContentView: View {
             .toolbar {
                ToolbarItem {
                   Menu {
-                     MenuContent(isDarkMode: $isDarkMode)
+                     NavigationLink(destination: ContentView(isDarkMode: $isDarkMode)) {
+                        Label("Home", systemImage: "house")
+                     }
+                     NavigationLink(destination: IPAChartView(isDarkMode: $isDarkMode)) {
+                        Label("IPA Chart", systemImage: "chart.bar")
+                     }
+                     NavigationLink(destination: ConjugationChartView(isDarkMode: $isDarkMode)) {
+                        Label("Conjugation Chart", systemImage: "tablecells")
+                     }
+                     NavigationLink(destination: AboutView(isDarkMode: $isDarkMode)) {
+                        Label("About", systemImage: "info.circle")
+                     }
+                     Section {
+                        Toggle("Dark Mode", isOn: $isDarkMode)
+                     }
                   } label: {
                      Image(systemName: "line.horizontal.3")
                   }

@@ -19,7 +19,21 @@ struct ConjugationChartView: View {
             .toolbar {
                ToolbarItem {
                   Menu {
-                     MenuContent(isDarkMode: $isDarkMode)
+                     NavigationLink(destination: ContentView(isDarkMode: $isDarkMode)) {
+                        Label("Home", systemImage: "house")
+                     }
+                     NavigationLink(destination: IPAChartView(isDarkMode: $isDarkMode)) {
+                        Label("IPA Chart", systemImage: "chart.bar")
+                     }
+                     NavigationLink(destination: ConjugationChartView(isDarkMode: $isDarkMode)) {
+                        Label("Conjugation Chart", systemImage: "tablecells")
+                     }
+                     NavigationLink(destination: AboutView(isDarkMode: $isDarkMode)) {
+                        Label("About", systemImage: "info.circle")
+                     }
+                     Section {
+                        Toggle("Dark Mode", isOn: $isDarkMode)
+                     }
                   } label: {
                      Image(systemName: "line.horizontal.3")
                   }
