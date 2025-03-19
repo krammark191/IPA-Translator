@@ -12,15 +12,21 @@ struct IPAChartView: View {
    @Binding var isDarkMode: Bool
    
    var body: some View {
-      Text("IPA Chart Page")
-         .font(.title)
-         .navigationTitle("IPA Chart")
-         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-               MenuView(isDarkMode: $isDarkMode)
+      NavigationView {
+         Text("IPA Chart Page")
+            .font(.title)
+            .navigationTitle("IPA Chart")
+            .toolbar {
+               ToolbarItem {
+                  Menu {
+                     MenuContent(isDarkMode: $isDarkMode)
+                  } label: {
+                     Image(systemName: "line.horizontal.3")
+                  }
+               }
             }
-         }
-         .preferredColorScheme(isDarkMode ? .dark : .light)
+            .preferredColorScheme(isDarkMode ? .dark : .light)
+      }
    }
 }
 

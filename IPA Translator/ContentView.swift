@@ -150,8 +150,12 @@ struct ContentView: View {
             }
             .navigationTitle("IPA Translator")
             .toolbar {
-               ToolbarItem(placement: .navigationBarTrailing) {
-                  MenuView(isDarkMode: $isDarkMode)
+               ToolbarItem {
+                  Menu {
+                     MenuContent(isDarkMode: $isDarkMode)
+                  } label: {
+                     Image(systemName: "line.horizontal.3")
+                  }
                }
             }
             .preferredColorScheme(isDarkMode ? .dark : .light)

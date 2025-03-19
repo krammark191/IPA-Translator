@@ -12,15 +12,21 @@ struct ConjugationChartView: View {
    @Binding var isDarkMode: Bool
    
    var body: some View {
-      Text("Conjugation Chart Page")
-         .font(.title)
-         .navigationTitle("Conjugation Chart")
-         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-               MenuView(isDarkMode: $isDarkMode)
+      NavigationView {
+         Text("Conjugation Chart Page")
+            .font(.title)
+            .navigationTitle("Conjugation Chart")
+            .toolbar {
+               ToolbarItem {
+                  Menu {
+                     MenuContent(isDarkMode: $isDarkMode)
+                  } label: {
+                     Image(systemName: "line.horizontal.3")
+                  }
+               }
             }
-         }
-         .preferredColorScheme(isDarkMode ? .dark : .light)
+            .preferredColorScheme(isDarkMode ? .dark : .light)
+      }
    }
 }
 
