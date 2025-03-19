@@ -9,11 +9,11 @@ import SwiftUI
 
 @main
 struct IPA_TranslatorApp: App {
-   @State private var isDarkMode: Bool = UITraitCollection.current.userInterfaceStyle == .dark
+   @State private var isDarkMode: Bool = false
    
    var body: some Scene {
       WindowGroup {
-         ContentView(isDarkMode: $isDarkMode)  // Pass the binding here
+         ContentView()  // Pass the binding here
       }
    }
 }

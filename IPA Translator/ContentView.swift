@@ -13,7 +13,6 @@ struct ContentView: View {
    @State private var inputText: String = ""
    @State private var ipaOutput: String = ""
    @State private var selectedLanguage: String = "English"
-   @Binding var isDarkMode: Bool
    
    @Environment(\.colorScheme) var colorScheme: ColorScheme
    
@@ -149,27 +148,24 @@ struct ContentView: View {
             .toolbar {
                ToolbarItem {
                   Menu {
-                     NavigationLink(destination: ContentView(isDarkMode: $isDarkMode)) {
+                     NavigationLink(destination: ContentView()) {
                         Label("Home", systemImage: "house")
                      }
-                     NavigationLink(destination: IPAChartView(isDarkMode: $isDarkMode)) {
+                     NavigationLink(destination: IPAChartView()) {
                         Label("IPA Chart", systemImage: "chart.bar")
                      }
-                     NavigationLink(destination: ConjugationChartView(isDarkMode: $isDarkMode)) {
+                     NavigationLink(destination: ConjugationChartView()) {
                         Label("Conjugation Chart", systemImage: "tablecells")
                      }
-                     NavigationLink(destination: AboutView(isDarkMode: $isDarkMode)) {
+                     NavigationLink(destination: AboutView()) {
                         Label("About", systemImage: "info.circle")
-                     }
-                     Section {
-                        Toggle("Dark Mode", isOn: $isDarkMode)
                      }
                   } label: {
                      Image(systemName: "line.horizontal.3")
                   }
                }
             }
-            .preferredColorScheme(isDarkMode ? .dark : .light)
+            .preferredColorScheme(colorScheme)
             .keyboardResponsive()
          }
       }
@@ -177,5 +173,5 @@ struct ContentView: View {
 }
 
 #Preview {
-   ContentView(isDarkMode: .constant(false))  // Pass a constant binding for preview
+   ContentView()  // Pass a constant binding for preview
 }
