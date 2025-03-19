@@ -9,19 +9,13 @@ import SwiftUI
 
 struct MenuView: View {
    @Binding var isDarkMode: Bool
-   @State private var showMenu = false
    
    var body: some View {
-      Button(action: {
-         showMenu.toggle()
-         print("Tapped hamburger menu icon")
-      }) {
-         Image(systemName: "line.3.horizontal")
-            .foregroundColor(.primary)
-            .padding(10)
-      }
-      .popover(isPresented: $showMenu) {
-         VStack(alignment: .leading, spacing: 10) {
+      NavigationView {
+         List {
+            NavigationLink(destination: ContentView()) {
+               Label("Home", systemImage: "house")
+            }
             NavigationLink(destination: IPAChartView(isDarkMode: $isDarkMode)) {
                Label("IPA Chart", systemImage: "chart.bar")
             }
@@ -31,11 +25,12 @@ struct MenuView: View {
             NavigationLink(destination: AboutView(isDarkMode: $isDarkMode)) {
                Label("About", systemImage: "info.circle")
             }
-            Divider()
-            Toggle("Dark Mode", isOn: $isDarkMode)
+            
+            Section {
+               Toggle("Dark Mode", isOn: $isDarkMode)
+            }
          }
-         .padding()
-         .frame(width: 200) // Adjust as needed
+         .navigationTitle("Menu")
       }
    }
 }
